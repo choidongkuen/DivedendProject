@@ -22,6 +22,8 @@
  <details>
   <summary> 예외 코드 </summary>
    <div markdown="1">
+   
+  -  customExcpetion 을 통한 예외 처리
  
  </details>
 

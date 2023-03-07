@@ -1,6 +1,7 @@
 package com.example.dividendproject.domain.entity;
 
 
+import com.example.dividendproject.dto.Company;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,5 +27,10 @@ public class CompanyEntity{
     private String ticker;
 
     private String name;
+
+    public CompanyEntity(Company company) {
+        this.ticker = company.getTicker();
+        this.name = company.getName();
+    }
 
 }

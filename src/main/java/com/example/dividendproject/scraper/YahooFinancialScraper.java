@@ -10,12 +10,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class YahooFinancialScraper implements Scraper{
 
     private static final String STATICS_URL = "https://finance.yahoo.com/quote/%s/history?period1=%d&period2=%d&interval=1mo";
@@ -23,7 +24,7 @@ public class YahooFinancialScraper implements Scraper{
     private static final long START_TIME = 86400; // 60 * 60 * 24
 
     @Override
-    public ScrapedResult scrap(Company company) {
+    public ScrapedResult scrap(Company company) { // 회사 정보(Company) 에 대한 Scrap 정보 가져오는 메소드
 
         var scrapedResult = new ScrapedResult();
         scrapedResult.setCompany(company);
@@ -75,7 +76,7 @@ public class YahooFinancialScraper implements Scraper{
     }
 
     @Override
-    public Company scrapCompanyByTicker(String ticker) { // ticker 에 대한 회사 정보 가져오기
+    public Company scrapCompanyByTicker(String ticker) { // ticker 에 대한 회사 정보(Company) 가져오기
 
         String url = String.format(SUMMARY_URL, ticker, ticker);
 

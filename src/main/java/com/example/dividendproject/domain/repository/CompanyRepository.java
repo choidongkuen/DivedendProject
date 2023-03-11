@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
-    boolean existByTicker(String ticker);
+    boolean existsByTicker(String ticker);
 }

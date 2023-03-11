@@ -31,7 +31,7 @@ public class CompanyService {
     @Transactional
     public Company save(String ticker) {
 
-        if(companyRepository.existByTicker(ticker)) {
+        if(companyRepository.existsByTicker(ticker)) {
             throw new RuntimeException("already exists ticker-> " + ticker);
         }
 

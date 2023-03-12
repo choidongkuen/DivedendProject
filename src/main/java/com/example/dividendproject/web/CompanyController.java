@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,25 +24,26 @@ public class CompanyController {
         return null;
     }
 
-    @GetMapping()
-    public ResponseEntity<?> searchCompany() {
-
-        return null;
+    @GetMapping
+    public ResponseEntity<List<Company>> searchCompany() {
+        return new ResponseEntity<>(companyService.getAllCompanies(), HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<?> addCompany(@RequestParam Company request) {
-        String ticker = request.getTicker();
+    @PostMapping
+    public ResponseEntity<?> addCompany(@RequestBody Company request) {
 
-        if(ticker == null) {
-            throw new RuntimeException();
+        String ticker = request.getTicker().trim();
+
+        if(ObjectUtils.isEmpty(ticker)){
+            log.error("ticker is Empty Error!");
+            throw new RuntimeException("ticker is Empty");
         }
 
         Company company = companyService.save(ticker);
         return new ResponseEntity<>(company, HttpStatus.OK);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     public ResponseEntity<?> deleteCompany() {
         return null;
     }

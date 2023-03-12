@@ -3,7 +3,9 @@ package com.example.dividendproject.web;
 import com.example.dividendproject.dto.Company;
 import com.example.dividendproject.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -25,8 +27,12 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Company>> searchCompany() {
-        return new ResponseEntity<>(companyService.getAllCompanies(), HttpStatus.OK);
+    public ResponseEntity<List<Company>> searchCompany(
+            @RequestParam(name = "page") final int page,
+            @RequestParam(name = "size") final int size) {
+
+        PageRequest pageRequest = PageRequest.of(page,size);
+        return new ResponseEntity<>(companyService.getAllCompanies(pageRequest), HttpStatus.OK);
     }
 
     @PostMapping

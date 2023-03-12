@@ -11,10 +11,12 @@ import com.example.dividendproject.exception.NotFoundCompanyException;
 import com.example.dividendproject.scraper.YahooFinancialScraper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class CompanyService {
+
+    private final Trie<String,String> trie;
 
     private final YahooFinancialScraper scraper;
 
@@ -72,5 +76,23 @@ public class CompanyService {
                                 .map(Company::fromEntity)
                                 .collect(Collectors.toList());
 
+    }
+
+    @Transactional
+    public void addAutoCompleteKeyword(String keyword) { // keyword 추가
+
+        this.trie.put(keyword, null);
+
+    }
+
+    @Transactional
+    public void deleteAutoCompleteKeyword(String keyword) { // keyword 삭제
+
+        this.trie.remove(keyword);
+    }
+
+    @Transactional
+    public List<String> autoComplete(String keyword) { // keyword 를 통해 검색
+        return new ArrayList<>(this.trie.prefixMap(keyword).keySet());
     }
 }

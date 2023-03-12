@@ -9,6 +9,7 @@ import com.example.dividendproject.dto.ScrapedResult;
 import com.example.dividendproject.scraper.YahooFinancialScraper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,11 +65,12 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true)
-    public List<Company> getAllCompanies() {
+    public List<Company> getAllCompanies(Pageable pageable) {
 
-        return companyRepository.findAll().stream()
-                .map(Company::fromEntity)
-                .collect(Collectors.toList());
+        return companyRepository.findAll(pageable).getContent()
+                                .stream()
+                                .map(Company::fromEntity)
+                                .collect(Collectors.toList());
 
     }
 }

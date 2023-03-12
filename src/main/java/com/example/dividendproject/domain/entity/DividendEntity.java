@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity(name = "DIVIDEND")
-public class DividendEntity {
+public class DividendEntity extends BaseEntity{
 
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

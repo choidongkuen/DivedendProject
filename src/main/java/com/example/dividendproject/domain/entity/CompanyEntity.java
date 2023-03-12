@@ -16,7 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "COMPANY")
-public class CompanyEntity{
+public class CompanyEntity extends BaseEntity{
 
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

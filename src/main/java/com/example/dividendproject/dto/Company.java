@@ -1,5 +1,6 @@
 package com.example.dividendproject.dto;
 
+import com.example.dividendproject.domain.entity.CompanyEntity;
 import lombok.*;
 
 @Getter
@@ -9,8 +10,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Company {
-
+    private String ticker;
     private String name;
 
-    private String ticker;
+
+    public static Company fromEntity(CompanyEntity companyEntity) {
+        return Company.builder()
+                .name(companyEntity.getName())
+                .ticker(companyEntity.getTicker())
+                .build();
+    }
 }

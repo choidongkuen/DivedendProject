@@ -6,6 +6,8 @@ import com.example.dividendproject.domain.repository.CompanyRepository;
 import com.example.dividendproject.domain.repository.DividendRepository;
 import com.example.dividendproject.dto.Company;
 import com.example.dividendproject.dto.ScrapedResult;
+import com.example.dividendproject.exception.AlreadyCompanyExistsException;
+import com.example.dividendproject.exception.NotFoundCompanyException;
 import com.example.dividendproject.scraper.YahooFinancialScraper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,7 @@ public class CompanyService {
     public Company save(String ticker) {
 
         if (companyRepository.existsByTicker(ticker)) {
-            throw new RuntimeException("already exists ticker-> " + ticker);
+            throw new AlreadyCompanyExistsException("already exists ticker-> " + ticker);
         }
 
         return this.storeCompanyAndDividend(ticker);
@@ -45,22 +47,20 @@ public class CompanyService {
         Company company = scraper.scrapCompanyByTicker(ticker);
 
         if (company == null) {
-            throw new RuntimeException("failed to scrap ticker -> " + ticker);
+            throw new NotFoundCompanyException("failed to scrap ticker -> " + ticker);
         }
 
         // 해당 회사가 존재할 경우, 회사의 배당금 정보를 스크래핑
         ScrapedResult scrapedResult = scraper.scrap(company);
 
         // 스크래핑 결과 저장
-        CompanyEntity companyEntity = new CompanyEntity(company);
-        companyRepository.save(companyEntity); // 회사 정보 저장
+        companyRepository.save(new CompanyEntity(company)); // 회사 정보 저장
 
-        List<DividendEntity> dividendEntities
-                = scrapedResult.getDividendEntities().stream()
-                               .map(d -> dividendRepository.save(new DividendEntity(companyEntity.getId(), d)))
-                               .collect(Collectors.toList()); // 배당금 정보 저장
+        // 배당금 정보 저장
 
-        dividendRepository.saveAll(dividendEntities);
+        dividendRepository.saveAll(scrapedResult.getDividendEntities().stream()
+                                        .map(d -> dividendRepository.save(new DividendEntity(new CompanyEntity(company).getId(), d)))
+                                        .collect(Collectors.toList()));
         return company;
     }
 

@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public class CompanyService {
     @Transactional
     public Company save(String ticker) {
 
-        if(companyRepository.existsByTicker(ticker)) {
+        if (companyRepository.existsByTicker(ticker)) {
             throw new RuntimeException("already exists ticker-> " + ticker);
         }
 
@@ -64,4 +63,12 @@ public class CompanyService {
         return company;
     }
 
+    @Transactional(readOnly = true)
+    public List<Company> getAllCompanies() {
+
+        return companyRepository.findAll().stream()
+                .map(Company::fromEntity)
+                .collect(Collectors.toList());
+
+    }
 }

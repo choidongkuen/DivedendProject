@@ -1,5 +1,6 @@
 package com.example.dividendproject.web;
 
+import com.example.dividendproject.service.FinanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FinanceController {
 
+    private final FinanceService financeService;
     @GetMapping("/dividend/{companyName}") // 회사에 해당하는 배당금 정보 조회
     public ResponseEntity<?> searchFinanceResponseEntity(
-            @PathVariable String companyName) {
+            @PathVariable(name = "companyName") String companyName) {
 
-        return null;
+        return ResponseEntity.ok(financeService.getAllDividendsByCompanyName(companyName));
     }
 }

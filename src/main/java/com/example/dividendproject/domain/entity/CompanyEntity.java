@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Slf4j
 @Getter
@@ -20,7 +18,7 @@ import javax.persistence.Id;
 @Entity(name = "COMPANY")
 public class CompanyEntity{
 
-    @Id
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

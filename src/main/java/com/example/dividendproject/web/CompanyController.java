@@ -22,7 +22,7 @@ public class CompanyController {
 
     @GetMapping("/autocomplete") // 키워드에 해당하는 회사 ticker 조회
     public ResponseEntity<List<String>> autoComplete(@RequestParam String keyword) {
-        return ResponseEntity.ok().body(companyService.autoComplete(keyword));
+        return ResponseEntity.ok().body(companyService.getCompanyNamesByKeyword(keyword));
     }
 
     @GetMapping

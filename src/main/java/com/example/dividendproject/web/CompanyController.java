@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
@@ -25,7 +26,7 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Company>> searchCompany(
+    public ResponseEntity<List<Company>> getAllCompanies(
             @RequestParam(name = "page") final int page,
             @RequestParam(name = "size") final int size) {
 
@@ -44,10 +45,11 @@ public class CompanyController {
             throw new RuntimeException("ticker is Empty");
         }
 
-        Company company = companyService.save(ticker);
+        Company company = this.companyService.save(ticker); // ticker 를 통해 Company 객체 생성
         this.companyService.addAutoCompleteKeyword(company.getName()); // trie 에 회사명 저장
         return new ResponseEntity<>(company, HttpStatus.OK);
     }
+
 
     @DeleteMapping
     public ResponseEntity<?> deleteCompany() {

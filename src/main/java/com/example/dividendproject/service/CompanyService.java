@@ -95,4 +95,13 @@ public class CompanyService {
     public List<String> autoComplete(String keyword) { // keyword 를 통해 검색
         return new ArrayList<>(this.trie.prefixMap(keyword).keySet());
     }
+
+    @Transactional(readOnly = true)
+    public List<String> getCompanyNamesByKeyword(String keyword) {
+
+        return this.companyRepository.findByNameStartingWithIgnoreCase(keyword)
+                .stream()
+                .map(d -> d.getName())
+                .collect(Collectors.toList());
+    }
 }

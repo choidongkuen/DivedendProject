@@ -25,11 +25,6 @@ public class ScraperScheduler {
 
     private final YahooFinancialScraper scraper;
 
-    @Scheduled(cron = "0/5 * * * * *")
-    public void test() {
-        System.out.println("now -> " + System.currentTimeMillis());
-    }
-
 
     @Scheduled(cron = "0 0 1 * * *") // 매일 오전 1시마다 스케쥴러
     public void yahooFinanceScheduler() {

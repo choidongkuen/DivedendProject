@@ -14,9 +14,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity(name = "DIVIDEND")
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = {"companyId", "date"}
+                )
+        } // companyId, date 값이 같은 데이터를 DB 저장시 예외 발생
+)
 public class DividendEntity extends BaseEntity{
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long companyId;

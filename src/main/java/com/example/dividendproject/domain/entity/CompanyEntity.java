@@ -18,7 +18,8 @@ import javax.persistence.*;
 @Entity(name = "COMPANY")
 public class CompanyEntity extends BaseEntity{
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

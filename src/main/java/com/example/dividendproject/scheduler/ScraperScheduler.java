@@ -8,6 +8,7 @@ import com.example.dividendproject.dto.Company;
 import com.example.dividendproject.dto.ScrapedResult;
 import com.example.dividendproject.scraper.YahooFinancialScraper;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class ScraperScheduler {
     private final YahooFinancialScraper scraper;
 
 
-    @Scheduled(cron = "0 0 1 * * *") // 매일 오전 1시마다 스케쥴러
+    @Scheduled(cron = "${scheduler.scrap.yahoo}")// 매일 오전 1시마다 스케쥴러
     public void yahooFinanceScheduler() {
 
         log.info("scraping scheduling starts!");

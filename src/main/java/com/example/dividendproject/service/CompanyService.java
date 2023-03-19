@@ -44,8 +44,7 @@ public class CompanyService {
         return this.storeCompanyAndDividend(ticker);
     }
 
-    @Transactional
-    public Company storeCompanyAndDividend(String ticker) {
+    private Company storeCompanyAndDividend(String ticker) {
 
         // ticker 를 기준으로 Company 정보 스크래핑
         Company company = scraper.scrapCompanyByTicker(ticker);

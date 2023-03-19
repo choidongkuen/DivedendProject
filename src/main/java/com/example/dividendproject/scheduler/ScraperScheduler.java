@@ -8,7 +8,6 @@ import com.example.dividendproject.dto.Company;
 import com.example.dividendproject.dto.ScrapedResult;
 import com.example.dividendproject.scraper.YahooFinancialScraper;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(
+                        name = "dividendUniqueConstraint",
                         columnNames = {"companyId", "date"}
                 )
         } // companyId, date 값이 같은 데이터를 DB 저장시 예외 발생

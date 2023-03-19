@@ -61,10 +61,9 @@ public class CompanyService {
         companyRepository.save(new CompanyEntity(company)); // 회사 정보 저장
 
         // 배당금 정보 저장
-
         dividendRepository.saveAll(scrapedResult.getDividendEntities().stream()
-                                        .map(d -> dividendRepository.save(new DividendEntity(new CompanyEntity(company).getId(), d)))
-                                        .collect(Collectors.toList()));
+                        .map(d -> new DividendEntity(new CompanyEntity(company).getId(),d))
+                        .collect(Collectors.toList()));
         return company;
     }
 

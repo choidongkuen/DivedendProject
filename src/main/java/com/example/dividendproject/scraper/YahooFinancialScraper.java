@@ -83,11 +83,26 @@ public class YahooFinancialScraper implements Scraper{
         try {
             Document document = Jsoup.connect(url).get();
             Element titleEle = document.getElementsByTag("h1").get(0);
-            String title = titleEle.text().trim();
+            List<Character> name = new ArrayList<>();
+
+            char[] titleEleCharArray = titleEle.text().toCharArray();
+
+            for(char c : titleEleCharArray) {
+                if(c == '(') {
+                    break;
+                }
+                name.add(c);
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            for(Character c : name) {
+                sb.append(c);
+            }
 
             return Company.builder()
                     .ticker(ticker)
-                    .name(title)
+                    .name(sb.toString().trim())
                     .build();
 
         } catch (IOException e) {

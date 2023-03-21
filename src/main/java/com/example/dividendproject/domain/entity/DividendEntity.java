@@ -28,10 +28,14 @@ public class DividendEntity extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "COMPANY_ID", nullable = false)
     private Long companyId;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATE", nullable = false)
     private LocalDateTime date;
 
+    @Column(name = "DIVIDEND")
     private String dividend;
 
     public DividendEntity(Long companyId, Dividend dividend) {

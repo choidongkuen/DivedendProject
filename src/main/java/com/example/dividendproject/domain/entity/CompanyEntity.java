@@ -22,9 +22,10 @@ public class CompanyEntity extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = "TICKER",unique = true)
     private String ticker;
 
+    @Column(name = "COMPANY_NAME")
     private String name;
 
     public CompanyEntity(Company company) {

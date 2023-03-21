@@ -9,6 +9,7 @@ import com.example.dividendproject.dto.ScrapedResult;
 import com.example.dividendproject.scraper.YahooFinancialScraper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class ScraperScheduler {
 
     private final YahooFinancialScraper scraper;
 
-
+    @CacheEvict(value = "finance", allEntries = true) // 캐시에 있는 모든 데이터를 지운다.(스케쥴러 동작마다 CacheEvict 같이 동작)
     @Scheduled(cron = "${scheduler.scrap.yahoo}")// 매일 오전 1시마다 스케쥴러
     public void yahooFinanceScheduler() {
 

@@ -1,6 +1,5 @@
 package com.example.dividendproject.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -14,23 +13,23 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-@RequiredArgsConstructor
+
 @Configuration
 public class CacheConfig { // redis cache config bean
 
 
     @Value("${spring.redis.host}")
-    private final String host;
+    private String host;
 
     @Value("${spring.redis.port}")
-    private final Integer port;
+    private Integer port;
 
     @Bean
     public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) { // redis 캐시 관련 config bean
 
         RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig()
-                              .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                              .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                                      .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                                      .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)

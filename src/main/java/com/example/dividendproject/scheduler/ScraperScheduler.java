@@ -1,5 +1,6 @@
 package com.example.dividendproject.scheduler;
 
+import com.example.dividendproject.domain.constant.CacheKey;
 import com.example.dividendproject.domain.entity.CompanyEntity;
 import com.example.dividendproject.domain.entity.DividendEntity;
 import com.example.dividendproject.domain.repository.CompanyRepository;
@@ -26,7 +27,7 @@ public class ScraperScheduler {
 
     private final YahooFinancialScraper scraper;
 
-    @CacheEvict(value = "finance", allEntries = true) // 캐시에 있는 모든 데이터를 지운다.(스케쥴러 동작마다 CacheEvict 같이 동작)
+    @CacheEvict(value = CacheKey.KEY_FINANCE_KEY, allEntries = true) // 캐시에 있는 모든 데이터를 지운다.(스케쥴러 동작마다 CacheEvict 같이 동작)
     @Scheduled(cron = "${scheduler.scrap.yahoo}")// 매일 오전 1시마다 스케쥴러
     public void yahooFinanceScheduler() {
 

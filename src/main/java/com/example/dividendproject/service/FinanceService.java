@@ -1,6 +1,7 @@
 package com.example.dividendproject.service;
 
 
+import com.example.dividendproject.domain.constant.CacheKey;
 import com.example.dividendproject.domain.entity.CompanyEntity;
 import com.example.dividendproject.domain.entity.DividendEntity;
 import com.example.dividendproject.domain.repository.CompanyRepository;
@@ -30,7 +31,7 @@ public class FinanceService {
     // 동일한 요청이 자주 들어오는가? -> (규모가 크지 않은 회사라면) Yes
     // 변경이 빈번한가? -> No
 
-    @Cacheable(key = "#companyName", value = "finance")
+    @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE_KEY)
     @Transactional(readOnly = true)
     public ScrapedResult getAllDividendsByCompanyName(String companyName) {
 

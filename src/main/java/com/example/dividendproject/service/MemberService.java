@@ -21,21 +21,22 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return this.memberRepository.findByUserName(userName)
-                .orElseThrow(() -> new UsernameNotFoundException("일치하는 회원 정보가 존재하지 않습니다."));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return this.memberRepository.findByEmail(email)
+                                    .orElseThrow(() -> new UsernameNotFoundException("일치하는 회원 정보가 존재하지 않습니다."));
     }
 
     public MemberEntity signUp(Auth.Signup signup) {
 
-        this.memberRepository.findByUserName(signup.getUserName())
+        this.memberRepository.findByEmail(signup.getEmail())
                              .orElseThrow(() -> new AlreadyMemberSignupException("이미 사용중인 회원입니다."));
 
         return this.memberRepository.save(MemberEntity.builder()
-                                               .userName(signup.getUserName())
-                                               .password(passwordEncoder.encode(signup.getPassword()))
-                                               .authority(signup.getAuthority())
-                                               .build()
+                                      .email(signup.getEmail())
+                                      .userName(signup.getName())
+                                      .password(passwordEncoder.encode(signup.getPassword()))
+                                      .authority(signup.getAuthority())
+                                      .build()
         );
 
     }

@@ -25,6 +25,9 @@ public class MemberEntity extends BaseEntity implements UserDetails {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
     @Column(name = "USER_NAME", nullable = false, length = 50)
     private String userName;
 

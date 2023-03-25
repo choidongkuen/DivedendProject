@@ -1,11 +1,15 @@
 package com.example.dividendproject.security;
 
 import com.example.dividendproject.domain.constant.Authority;
+import com.example.dividendproject.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -14,10 +18,13 @@ import static org.springframework.util.StringUtils.hasText;
 
 
 @Component
+@RequiredArgsConstructor
 public class TokenProvider {
 
     private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60; // 1시간 만료 기간
     private static final String KEY_ROLES = "roles";
+
+    private final MemberService memberService;
 
     @Value("${spring.jwt.secret}")
     private String secretKey;
@@ -34,6 +41,12 @@ public class TokenProvider {
                    .setExpiration(new Date(new Date().getTime() + TOKEN_EXPIRE_TIME)) // 만료 시간
                    .signWith(SignatureAlgorithm.HS512, secretKey)
                    .compact();
+    }
+
+    public UsernamePasswordAuthenticationToken getAuthentication(String jwt) {
+
+        UserDetails userDetails = this.memberService.loadUserByUsername(this.getUserEmail(jwt));
+        return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
     }
 
     public boolean validateToken(String token) {
@@ -57,7 +70,6 @@ public class TokenProvider {
             return e.getClaims();
 
         }
-
     }
 
 }

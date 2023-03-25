@@ -4,6 +4,7 @@ import com.example.dividendproject.domain.entity.MemberEntity;
 import com.example.dividendproject.domain.repository.MemberRepository;
 import com.example.dividendproject.dto.Auth;
 import com.example.dividendproject.exception.AlreadyMemberSignupException;
+import com.example.dividendproject.exception.NotMatchPasswordException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,7 +42,15 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    public MemberEntity authenticate(Auth.Signin signin) {
-        return null;
+    public MemberEntity authenticate(Auth.Signin signin) { // 로그인시 회원 인증
+
+        MemberEntity memberEntity =  this.memberRepository.findByEmail(signin.getEmail())
+                            .orElseThrow(() -> new UsernameNotFoundException("일치하는 회원 정보가 존재하지 않습니다."));
+
+        if(!this.passwordEncoder.matches(memberEntity.getPassword(), signin.getPassword())) {
+            throw new NotMatchPasswordException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return memberEntity;
     }
 }

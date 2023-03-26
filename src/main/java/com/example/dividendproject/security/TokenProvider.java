@@ -46,7 +46,7 @@ public class TokenProvider {
     public UsernamePasswordAuthenticationToken getAuthentication(String jwt) {
 
         UserDetails userDetails = this.memberService.loadUserByUsername(this.getUserEmail(jwt));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     public boolean validateToken(String token) {

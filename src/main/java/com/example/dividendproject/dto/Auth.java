@@ -1,5 +1,6 @@
 package com.example.dividendproject.dto;
 
+import com.example.dividendproject.domain.entity.MemberEntity;
 import lombok.*;
 
 import java.util.List;
@@ -34,5 +35,14 @@ public class Auth {
         private String password;
 
         private List<String> roles;
+
+        public MemberEntity toEntity() {
+            return MemberEntity.builder()
+                    .userName(this.name)
+                    .email(this.email)
+                    .password(this.password)
+                    .roles(this.roles)
+                    .build();
+        }
     }
 }

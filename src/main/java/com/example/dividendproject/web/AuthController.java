@@ -35,7 +35,7 @@ public class AuthController {
     public ResponseEntity<?> signin(@RequestBody Auth.Signin request) {
         MemberEntity member = this.memberService.authenticate(request);
 
-        String token = this.tokenProvider.generateToken(member.getEmail(), member.getAuthority());
+        String token = this.tokenProvider.generateToken(member.getEmail(), member.getRoles());
 
         HttpHeaders header = new HttpHeaders();
         header.set("Authorization",token);

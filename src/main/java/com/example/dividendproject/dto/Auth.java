@@ -2,6 +2,7 @@ package com.example.dividendproject.dto;
 
 import com.example.dividendproject.domain.entity.MemberEntity;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 

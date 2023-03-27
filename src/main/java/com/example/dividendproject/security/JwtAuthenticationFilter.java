@@ -3,10 +3,10 @@ package com.example.dividendproject.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// 하나의 회원의 요청마다 Jwt 유효성을 검증하기 위한 필터
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -33,12 +34,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 컨트롤
 
         String token = this.resolveTokenFromToken(request);
 
-        if(StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
+        if (token != null && this.tokenProvider.validateToken(token)) {
             // 토큰 유효성 검증
-            UsernamePasswordAuthenticationToken auth = this.tokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(auth);  // 인증정보를 ContextHolder 에 담기
+            Authentication auth = this.tokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);  // JWT 유효성 검증 후, 인증정보를 ContextHolder 에 담기
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response); // Spring SecurityFilterChain 으로 동작
     }
 
     private String resolveTokenFromToken(HttpServletRequest request) { // 토큰 정보를 가져오는 메소드

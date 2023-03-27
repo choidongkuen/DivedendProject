@@ -35,14 +35,8 @@ public class MemberService implements UserDetailsService {
             throw new AlreadyMemberSignupException("이미 사용중인 회원입니다.");
         }
 
-        return this.memberRepository.save(MemberEntity.builder()
-                                                      .email(signup.getEmail())
-                                                      .userName(signup.getName())
-                                                      .password(passwordEncoder.encode(signup.getPassword()))
-                                                      .roles(signup.getRoles())
-                                                      .build()
-        );
-
+        signup.setPassword(passwordEncoder.encode(signup.getPassword()));
+        return this.memberRepository.save(signup.toEntity());
     }
 
     public MemberEntity authenticate(Auth.Signin signin) { // 로그인시 회원 인증
@@ -51,8 +45,7 @@ public class MemberService implements UserDetailsService {
                                                          .orElseThrow(() -> new UsernameNotFoundException("일치하는 회원 정보가 존재하지 않습니다."));
 
         if (!this.passwordEncoder.matches(signin.getPassword(), memberEntity.getPassword())) {
-            log.error(memberEntity.getPassword() + "!!");
-            log.error(this.passwordEncoder.encode(signin.getPassword()) + "!!");
+            log.error(this.passwordEncoder.encode(signin.getPassword()));
             throw new NotMatchPasswordException("비밀번호가 일치하지 않습니다.");
         }
 

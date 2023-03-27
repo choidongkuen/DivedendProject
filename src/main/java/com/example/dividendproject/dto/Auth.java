@@ -1,6 +1,5 @@
 package com.example.dividendproject.dto;
 
-import com.example.dividendproject.domain.constant.Authority;
 import lombok.*;
 
 public class Auth {
@@ -32,6 +31,6 @@ public class Auth {
 
         private String password;
 
-        private Authority authority;
+        private String authority;
     }
 }

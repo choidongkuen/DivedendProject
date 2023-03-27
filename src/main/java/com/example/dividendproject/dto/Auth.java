@@ -2,6 +2,8 @@ package com.example.dividendproject.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 public class Auth {
 
     @Getter
@@ -31,6 +33,6 @@ public class Auth {
 
         private String password;
 
-        private String authority;
+        private List<String> roles;
     }
 }

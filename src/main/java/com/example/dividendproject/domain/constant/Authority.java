@@ -8,8 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Authority {
 
-    MEMBER("일반 회원"),
-    ADMIN("관리자");
+    MEMBER("ROLE_MEMBER"),
+    ADMIN("ROLE_ADMIN");
 
     private final String state;
 }

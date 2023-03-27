@@ -37,6 +37,6 @@ public class AuthController {
 
         HttpHeaders header = new HttpHeaders();
         header.set("Authorization",token);
-        return new ResponseEntity<>(header, HttpStatus.OK);
+        return new ResponseEntity<>(member,header,HttpStatus.OK);
     }
 }

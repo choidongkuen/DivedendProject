@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class CompanyController {
         return ResponseEntity.ok().body(companyService.getCompanyNamesByKeyword(keyword));
     }
 
+    @PreAuthorize(value = "hasRole('MEMBER')")
     @GetMapping
     public ResponseEntity<List<Company>> getAllCompanies(
             @RequestParam(name = "page") final int page,
@@ -34,8 +36,8 @@ public class CompanyController {
                 companyService.getAllCompanies(PageRequest.of(page, size)), HttpStatus.OK
         );
     }
-
     @PostMapping
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public ResponseEntity<Company> addCompany(@RequestBody Company request) {
 
         String ticker = request.getTicker().trim();

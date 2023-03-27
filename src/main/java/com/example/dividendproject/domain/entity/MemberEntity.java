@@ -28,10 +28,10 @@ public class MemberEntity extends BaseEntity implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "USER_NAME", nullable = false, length = 50)
+    @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
-    @Column(name = "PASSWORD", nullable = false, length = 50)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)

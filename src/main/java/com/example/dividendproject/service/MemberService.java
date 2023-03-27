@@ -1,5 +1,6 @@
 package com.example.dividendproject.service;
 
+import com.example.dividendproject.domain.constant.Authority;
 import com.example.dividendproject.domain.entity.MemberEntity;
 import com.example.dividendproject.domain.repository.MemberRepository;
 import com.example.dividendproject.dto.Auth;
@@ -29,25 +30,28 @@ public class MemberService implements UserDetailsService {
 
     public MemberEntity signUp(Auth.Signup signup) {
 
-        this.memberRepository.findByEmail(signup.getEmail())
-                             .orElseThrow(() -> new AlreadyMemberSignupException("이미 사용중인 회원입니다."));
+        boolean exists = this.memberRepository.existsByEmail(signup.getEmail());
+
+        if (exists) {
+            throw new AlreadyMemberSignupException("이미 사용중인 회원입니다.");
+        }
 
         return this.memberRepository.save(MemberEntity.builder()
-                                      .email(signup.getEmail())
-                                      .userName(signup.getName())
-                                      .password(passwordEncoder.encode(signup.getPassword()))
-                                      .authority(signup.getAuthority())
-                                      .build()
+                                                      .email(signup.getEmail())
+                                                      .userName(signup.getName())
+                                                      .password(passwordEncoder.encode(signup.getPassword()))
+                                                      .authority(Authority.valueOf(signup.getAuthority()))
+                                                      .build()
         );
 
     }
 
     public MemberEntity authenticate(Auth.Signin signin) { // 로그인시 회원 인증
 
-        MemberEntity memberEntity =  this.memberRepository.findByEmail(signin.getEmail())
-                            .orElseThrow(() -> new UsernameNotFoundException("일치하는 회원 정보가 존재하지 않습니다."));
+        MemberEntity memberEntity = this.memberRepository.findByEmail(signin.getEmail())
+                                                         .orElseThrow(() -> new UsernameNotFoundException("일치하는 회원 정보가 존재하지 않습니다."));
 
-        if(!this.passwordEncoder.matches(memberEntity.getPassword(), signin.getPassword())) {
+        if (!this.passwordEncoder.matches(memberEntity.getPassword(), signin.getPassword())) {
             throw new NotMatchPasswordException("비밀번호가 일치하지 않습니다.");
         }
 

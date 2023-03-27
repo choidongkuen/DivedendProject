@@ -1,6 +1,5 @@
 package com.example.dividendproject.domain.entity;
 
-import com.example.dividendproject.domain.constant.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,8 +33,8 @@ public class MemberEntity extends BaseEntity implements UserDetails {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Authority authority;
+    @Column(name = "AUTHORITY")
+    private String authority;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

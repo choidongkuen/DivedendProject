@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -22,11 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
 
         web.ignoring()
-                .antMatchers("/h2-console/**");
+           .antMatchers("/h2-console/**");
     }
 
     @Override
@@ -38,11 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Jwt -> Stateless
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**/signup","/**/signin").permitAll()
+                .antMatchers("/**/signup", "/**/signin").permitAll()
                 .and()
                 .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-                // 권한 별로 권한 설정은 -> 어노테이션으로 구현 예정
+        // 권한 별로 권한 설정은 -> 어노테이션으로 구현 예정
     }
 
     @Bean // spring 2.xx 부터

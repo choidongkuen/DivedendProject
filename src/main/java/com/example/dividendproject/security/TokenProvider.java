@@ -29,10 +29,10 @@ public class TokenProvider {
     @Value("${spring.jwt.secret}")
     private String secretKey;
 
-    public String generateToken(String email, Authority authority) {
+    public String generateToken(String email, String authority) {
 
         Claims claims = Jwts.claims().setSubject(email);
-        claims.put(KEY_ROLES, authority.getState());
+        claims.put(KEY_ROLES, authority);
 
 
         return Jwts.builder()

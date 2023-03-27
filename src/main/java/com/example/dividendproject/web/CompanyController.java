@@ -1,9 +1,11 @@
 package com.example.dividendproject.web;
 
+import com.example.dividendproject.domain.constant.CacheKey;
 import com.example.dividendproject.dto.Company;
 import com.example.dividendproject.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,14 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
+    private final CacheManager cacheManager;
+
     @GetMapping("/autocomplete") // 키워드에 해당하는 회사 ticker 조회
     public ResponseEntity<List<String>> autoComplete(@RequestParam String keyword) {
         return ResponseEntity.ok().body(companyService.getCompanyNamesByKeyword(keyword));
     }
 
-    @PreAuthorize(value = "hasRole('MEMBER')")
+    @PreAuthorize(value = "hasAnyRole('MEMBER','ADMIN')")
     @GetMapping
     public ResponseEntity<List<Company>> getAllCompanies(
             @RequestParam(name = "page") final int page,
@@ -36,6 +40,7 @@ public class CompanyController {
                 companyService.getAllCompanies(PageRequest.of(page, size)), HttpStatus.OK
         );
     }
+
     @PostMapping
     @PreAuthorize(value = "hasRole('ADMIN')")
     public ResponseEntity<Company> addCompany(@RequestBody Company request) {
@@ -53,8 +58,19 @@ public class CompanyController {
     }
 
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteCompany() {
-        return null;
+    @DeleteMapping("/{ticker}")
+    @PreAuthorize(value = "hasRole('ADMIN')")
+    public ResponseEntity<?> deleteCompany(
+            @PathVariable(name = "ticker") String ticker
+    ) {
+        String deletedCompanyName = this.companyService.deleteCompany(ticker);
+        clearFinanceCache(deletedCompanyName); // 캐시 정보 삭제
+        return ResponseEntity.ok().body(deletedCompanyName);
+    }
+
+    private void clearFinanceCache(String companyName) {
+        // Not Completed yet
+
+        this.cacheManager.getCache(CacheKey.KEY_FINANCE_KEY).evict(companyName);
     }
 }

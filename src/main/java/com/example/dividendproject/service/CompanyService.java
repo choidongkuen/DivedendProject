@@ -102,4 +102,15 @@ public class CompanyService {
                 .map(d -> d.getName())
                 .collect(Collectors.toList());
     }
+
+    public String deleteCompany(String ticker) {
+
+        CompanyEntity company = this.companyRepository.findByTicker(ticker)
+                .orElseThrow(() -> new NotFoundCompanyException("일치하는 회사 정보가 존재하지 않습니다."));
+
+        this.companyRepository.delete(company); // 회사 삭제
+        this.dividendRepository.deleteAllByCompanyId(company.getId()); // 회사의 배당금 정보 삭제
+        this.deleteAutoCompleteKeyword(company.getName()); // 키워드 삭제
+        return company.getName();
+    }
 }

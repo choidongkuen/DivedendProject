@@ -47,7 +47,7 @@ public class MemberEntity extends BaseEntity implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return null;
+        return this.email;
     }
 
     @Override

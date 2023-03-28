@@ -30,7 +30,7 @@ public class CompanyController {
         return ResponseEntity.ok().body(companyService.getCompanyNamesByKeyword(keyword));
     }
 
-    @PreAuthorize(value = "hasAnyRole('MEMBER','ADMIN')")
+    @PreAuthorize("hasAnyRole('MEMBER','ADMIN')")
     @GetMapping
     public ResponseEntity<List<Company>> getAllCompanies(
             @RequestParam(name = "page") final int page,
@@ -42,7 +42,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    @PreAuthorize(value = "hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Company> addCompany(@RequestBody Company request) {
 
         String ticker = request.getTicker().trim();
@@ -59,7 +59,7 @@ public class CompanyController {
 
 
     @DeleteMapping("/{ticker}")
-    @PreAuthorize(value = "hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteCompany(
             @PathVariable(name = "ticker") String ticker
     ) {

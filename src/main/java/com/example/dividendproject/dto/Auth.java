@@ -35,14 +35,14 @@ public class Auth {
 
         private String password;
 
-        private List<String> roles;
+        private String roles;
 
         public MemberEntity toEntity() {
             return MemberEntity.builder()
                     .userName(this.name)
                     .email(this.email)
                     .password(this.password)
-                    .roles(this.roles)
+                    .role(this.roles)
                     .build();
         }
     }

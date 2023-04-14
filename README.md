@@ -18,4 +18,11 @@
    <div markdown="1">
  
  </details>
+ 
+ <details>
+  <summary> 예외 코드 </summary>
+   <div markdown="1">
+ 
+ </details>
+
 

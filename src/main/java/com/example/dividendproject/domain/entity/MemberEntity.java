@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Getter
@@ -35,15 +34,15 @@ public class MemberEntity extends BaseEntity implements UserDetails {
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> roles;
+    @Column(name = "ROLE")
+    private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                         .map(SimpleGrantedAuthority::new)
-                         .collect(Collectors.toList());
+
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.role));
+        return authorities;
     }
     @Override
     public String getUsername() {

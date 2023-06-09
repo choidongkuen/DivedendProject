@@ -1,6 +1,5 @@
 package com.example.dividendproject.security;
 
-import com.example.dividendproject.domain.constant.Authority;
 import com.example.dividendproject.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -13,8 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+
 import java.util.Date;
-import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -31,7 +30,7 @@ public class TokenProvider {
     @Value("${spring.jwt.secret}")
     private String secretKey;
 
-    public String generateToken(String email, List<String> roles) {
+    public String generateToken(String email, String roles) {
 
         Claims claims = Jwts.claims().setSubject(email);
         claims.put(KEY_ROLES, roles);
